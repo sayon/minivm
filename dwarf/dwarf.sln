@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dwarf-vm", "dwarf\dwarf.vcxproj", "{CB3368EA-B20D-4453-B032-700EB4E9A7D3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dwarf-compiler", "dwarf-compiler\dwarf-compiler.vcxproj", "{5A1C9D4C-8821-4339-944A-6722A5E1E992}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB3368EA-B20D-4453-B032-700EB4E9A7D3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CB3368EA-B20D-4453-B032-700EB4E9A7D3}.Debug|Win32.Build.0 = Debug|Win32
+		{CB3368EA-B20D-4453-B032-700EB4E9A7D3}.Release|Win32.ActiveCfg = Release|Win32
+		{CB3368EA-B20D-4453-B032-700EB4E9A7D3}.Release|Win32.Build.0 = Release|Win32
+		{5A1C9D4C-8821-4339-944A-6722A5E1E992}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5A1C9D4C-8821-4339-944A-6722A5E1E992}.Debug|Win32.Build.0 = Debug|Win32
+		{5A1C9D4C-8821-4339-944A-6722A5E1E992}.Release|Win32.ActiveCfg = Release|Win32
+		{5A1C9D4C-8821-4339-944A-6722A5E1E992}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
