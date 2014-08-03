@@ -1,9 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "tokens.h"
+#include "token_list.h"
 
-token_list_t tokenize(char* str) ;
-
+token_list_t* tokenize(char* str) ;
 
 #endif

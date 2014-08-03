@@ -19,8 +19,6 @@ typedef enum {
 	AST_PRINT
 } ast_node_type_t;
 
-
-
 typedef struct { 
 	struct ast_t* first;
 	struct ast_t* second;

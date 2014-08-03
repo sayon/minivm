@@ -42,9 +42,7 @@ typedef signed long addr_offset_t;
 typedef short reg_num_t;
 
 extern size_t bytecode_size[];
-
-
-
+ 
 
 typedef struct bytecode_t {
 	opcode_t opcode;
@@ -68,8 +66,7 @@ typedef struct {
  
  
 
-bytecode_t* emit_bytecode( bytecode_builder_t* builder, opcode_t opcode );
-
+bytecode_t* emit_bytecode( bytecode_builder_t* builder, opcode_t opcode ); 
 
 
 /* Helpers to emit specific bytecodes with parameters */

@@ -1,10 +1,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "tokens.h"
 #include <ctype.h>
 
 #include "common.h"  
+#include "token_list.h"
+
+
+
+static void token_list_quick_append( token_t* token, token_list_t** first, token_list_t** last ) {
+	token_list_t* item;
+
+	item = token_list_create( token );
+
+	if ( *first == NULL ) *first = *last = item;
+	else {
+		(**last).next = item;
+		(*last) = item;
+	} 
+}
 
 static bool_t starts_with( const char *str, const char *pattern )
 {
@@ -76,11 +90,11 @@ size_t get_token( char* str, token_t* token ) {
 	return 0;
 }
 
-token_list_t tokenize(char* str) {  
+token_list_t* tokenize( char* const str ) {  
 	char* start = str;
-	token_list_t tokens = token_list_create();
-
-	if ( str == NULL ) return tokens;
+	token_list_t* tokens = NULL;
+	token_list_t* last_token = NULL;
+	if ( str == NULL ) return NULL;
 
 	for( ;; )
 	{
@@ -89,20 +103,11 @@ token_list_t tokenize(char* str) {
 		start = skip_whitespaces( start );
 		token_size = get_token( start, &token );
 		if ( token_size == 0 ) break;
-		token_list_add( &tokens, token );
+		token.start_position = start - str;
+		token_list_quick_append( &token, &tokens, &last_token );
 		start += token_size;
 	}
-	token_list_add( &tokens, token_EOF );
+	token_list_quick_append( &token_EOF, &tokens, &last_token );
+
 	return tokens;
-}
-//
-//int main( int argc, char** argv ) {
-//	token_list_t list;
-//
-//	list = tokenize( "4 + 5 ; if (3) then 4;" );
-//
-//	token_list_foreach( &list, token_print );
-//	system("PAUSE");
-//	return 0;
-//
-//}
+} 
