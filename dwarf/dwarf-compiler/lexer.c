@@ -4,9 +4,7 @@
 #include "tokens.h"
 #include <ctype.h>
 
-#include "common.h"
-
-#include "lang_types.h"
+#include "common.h"  
 
 static bool_t starts_with( const char *str, const char *pattern )
 {
@@ -52,7 +50,7 @@ static size_t get_ident( char* str, token_t* token ) {
 	if ( size > IDENTIFIER_MAX_LENGTH ) {
 		fprintf( stderr, "Identifier length exceeds allowed" ); 
 		abort();
-		return -1;
+		return 0;
 	};
 	if ( size > 0 ) {
 		token-> type = TOK_IDENT;

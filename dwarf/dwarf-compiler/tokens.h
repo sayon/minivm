@@ -1,8 +1,7 @@
 #ifndef TOKENS_H
 #define TOKENS_H
 #include <stdio.h>
-#include "common.h"
-#include "lang_types.h"
+#include "common.h" 
 
 typedef enum {
 	TOK_IF,
@@ -29,8 +28,6 @@ typedef enum {
 	TOK_EOF,
 	TOKENS_COUNT
 } token_type_t;
-
-
 
 static char* token_strings[] = {
 	"if",
@@ -83,7 +80,7 @@ token_list_item_t* token_list_item_create( token_t token );
 void token_list_add( token_list_t* list, token_t token );
 
 token_list_t token_list_create( void );
-
+void token_list_destroy( token_list_t* list );
 void token_list_foreach( token_list_t* list, void (action)(token_t*) );
 
 void token_print( token_t* token ) ;
