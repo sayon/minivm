@@ -27,6 +27,11 @@ void ast_visit( ast_t* node, void (before)( ast_t* node ), void (after)( ast_t* 
 	case AST_MINUS:
 	case AST_MULT:
 	case AST_DIVIDE:
+	case AST_LT: 
+	case AST_LE:
+	case AST_EQ:
+	case AST_GE:
+	case AST_GT:
 		ast_visit( node->attributes.as_binop.left, before, after );
 		ast_visit( node->attributes.as_binop.right, before, after );
 		break;
@@ -108,6 +113,41 @@ void ast_print( ast_t* node, FILE* out ) {
 		ast_print( node->attributes.as_binop.right, out );
 		fprintf( out, " )" );
 		break;
+	case AST_LT: 
+		fprintf( out, "( " );
+		ast_print( node->attributes.as_binop.left, out );
+		fprintf( out, " < " );
+		ast_print( node->attributes.as_binop.right, out );
+		fprintf( out, " )" );
+		break;
+	case AST_LE:
+		fprintf( out, "( " );
+		ast_print( node->attributes.as_binop.left, out );
+		fprintf( out, " <= " );
+		ast_print( node->attributes.as_binop.right, out );
+		fprintf( out, " )" );
+		break;
+	case AST_EQ:
+		fprintf( out, "( " );
+		ast_print( node->attributes.as_binop.left, out );
+		fprintf( out, " == " );
+		ast_print( node->attributes.as_binop.right, out );
+		fprintf( out, " )" );
+		break;
+	case AST_GE:
+		fprintf( out, "( " );
+		ast_print( node->attributes.as_binop.left, out );
+		fprintf( out, " >= " );
+		ast_print( node->attributes.as_binop.right, out );
+		fprintf( out, " )" );
+		break;
+	case AST_GT:
+		fprintf( out, "( " );
+		ast_print( node->attributes.as_binop.left, out );
+		fprintf( out, " > " );
+		ast_print( node->attributes.as_binop.right, out );
+		fprintf( out, " )" );
+		break;
 	case AST_SEQ:
 		ast_print( node->attributes.as_seq.first, out );
 		fprintf( out, " ; " );
@@ -131,4 +171,3 @@ void ast_print( ast_t* node, FILE* out ) {
 		break;
 	}
 }
- 

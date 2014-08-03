@@ -14,8 +14,8 @@ statement := "{" statements "}" | assignment | if | while | print
 assignment := IDENT "=" expr
 if := "if" "(" expr ")" "then" statement "else" statement
 while := "while" "(" expr ")" statement
-
-expr := expr1 "+" expr | expr1 "-" expr | expr1
+expr := expr0 "<" expr | expr0 "<=" expr  | expr0 "==" expr  | expr0 ">" expr | expr0 ">=" expr | expr0 
+expr0 = expr1 "+" expr | expr1 "-" expr | expr1
 expr1 := atom "*" expr1 | atom "/" expr1 | atom
 atom := "(" expr ")" | NUMBER
 
@@ -39,6 +39,7 @@ static ast_t* assignment( token_list_t** stream, const char* const code  );
 static ast_t* if_then_else( token_list_t** stream, const char* const code  );
 static ast_t* while_cond( token_list_t** stream, const char* const code  );
 static ast_t* expression( token_list_t** stream, const char* const code  );
+static ast_t* expression0( token_list_t** stream, const char* const code  );
 static ast_t* expression1( token_list_t** stream, const char* const code  );
 static ast_t* atom( token_list_t** stream, const char* const code ); 
 
@@ -66,9 +67,30 @@ static token_t* accept( token_list_t** stream, token_type_t token_type )
 	else return NULL;
 } 
 
-
-/* Recursive-descent parser */
 static ast_t* expression( token_list_t** stream, const char* const code ) {
+	ast_t* lhs, *rhs;
+	lhs = expression0( stream, code );
+	if ( accept( stream, TOK_LT) ) {
+		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
+		return ast_lt( lhs, rhs );
+	} else if ( accept( stream, TOK_LE) ) {
+		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
+		return ast_le( lhs, rhs );
+	} else if ( accept( stream, TOK_EQ) ) {
+		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
+		return ast_eq( lhs, rhs );
+	} else if ( accept( stream, TOK_GE) ) {
+		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
+		return ast_ge( lhs, rhs );
+	} else if ( accept( stream, TOK_GT) ) {
+		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
+		return ast_gt( lhs, rhs );
+	} 
+	error_if_null( lhs, stream, code );
+	return lhs;
+}
+/* Recursive-descent parser */
+static ast_t* expression0( token_list_t** stream, const char* const code ) {
 	ast_t* lhs, *rhs;
 	lhs = expression1( stream, code );
 	error_if_null( lhs, stream, code );

@@ -105,11 +105,11 @@ void bytecode_print( bytecode_t* bytecode ) {
 
 	case BC_IPUSHREG:
 	case BC_IPOPREG:
-		printf( " %d\n",  bytecode-> params.reg );
+		printf( " %d",  bytecode-> params.reg );
 		break;
 	case BC_JMP:
 	case BC_JZ:
-		printf( " %d\n",  bytecode-> params.offset );
+		printf( " [%d]",  bytecode-> params.offset );
 		break;
 	default:
 		break;

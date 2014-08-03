@@ -77,6 +77,66 @@ static size_t generate_div( ast_t* node, bytecode_builder_t* bc, generator_conte
 	return first + bytecode_size[ BC_IDIV ] + second;
 }
 
+static size_t generate_lt( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
+	size_t first, second;
+	first = generate( node->attributes.as_binop.right, bc, ctx );
+	second = generate( node->attributes.as_binop.left, bc, ctx );
+	emit_bytecode( bc, BC_ICMP );
+	return first + bytecode_size[ BC_ICMP ] + second;
+}
+
+static size_t generate_gt( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
+	size_t first, second;
+	first = generate( node->attributes.as_binop.left, bc, ctx );
+	second = generate( node->attributes.as_binop.right, bc, ctx );
+	emit_bytecode( bc, BC_ICMP );
+	return first + bytecode_size[ BC_ICMP ] + second;
+}
+
+static size_t generate_eq( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
+	size_t first, second;
+	first = generate( node->attributes.as_binop.left, bc, ctx );
+	second = generate( node->attributes.as_binop.right, bc, ctx );
+	emit_bytecode( bc, BC_ICMP );
+	emit_bytecode( bc, BC_DUP );
+	emit_bytecode( bc, BC_IMUL );
+	emit_ipushc( bc, -1 );
+	emit_ipushc( bc, BC_IADD );
+	return first + second 
+		+ bytecode_size[ BC_ICMP ] 
+		+ bytecode_size[ BC_DUP ] 
+		+ bytecode_size[ BC_IMUL ] 
+		+ bytecode_size[ BC_IPUSHC ] 
+		+ bytecode_size[ BC_IADD ] ;
+}
+
+static size_t generate_le( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
+	size_t first, second;
+	first = generate( node->attributes.as_binop.right, bc, ctx );
+	second = generate( node->attributes.as_binop.left, bc, ctx );
+	emit_bytecode( bc, BC_ICMP );
+	emit_ipushc( bc, 1 );
+	emit_ipushc( bc, BC_IADD );
+	return first + second 
+		+ bytecode_size[ BC_ICMP ] 
+		+ bytecode_size[ BC_IPUSHC ] 
+		+ bytecode_size[ BC_IADD ] ;
+}
+
+
+static size_t generate_ge( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
+	size_t first, second;
+	first = generate( node->attributes.as_binop.left, bc, ctx );
+	second = generate( node->attributes.as_binop.right, bc, ctx );
+	emit_bytecode( bc, BC_ICMP );
+	emit_ipushc( bc, 1 );
+	emit_ipushc( bc, BC_IADD );
+	return first + second 
+		+ bytecode_size[ BC_ICMP ] 
+		+ bytecode_size[ BC_IPUSHC ] 
+		+ bytecode_size[ BC_IADD ] ;
+}
+
 static size_t generate_seq( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
 	size_t first, second;
 	first = generate( node->attributes.as_seq.first, bc, ctx );
@@ -114,14 +174,14 @@ static size_t generate_if( ast_t* node, bytecode_builder_t* bc, generator_contex
 	end = emit_jmp( bc );
 	no_size = generate( node-> attributes.as_if.no, bc, ctx );
 
-	*no = yes_size + bytecode_size[ BC_JMP ];
-	*end = no_size;
+	*no = yes_size;
+	*end = no_size + bytecode_size[ BC_JMP ];
 	return 
 		cond_size 
 		+ bytecode_size[ BC_JZ ] 
-		+ yes_size 
+	+ yes_size 
 		+ bytecode_size[ BC_JMP ]
-		+ no_size;
+	+ no_size;
 }
 
 static size_t generate_while( ast_t* node, bytecode_builder_t* bc, generator_context_t* ctx ) {
@@ -139,7 +199,7 @@ static size_t generate_while( ast_t* node, bytecode_builder_t* bc, generator_con
 
 	return cond_size 
 		+ bytecode_size[ BC_JZ ]
-		+ body_size
+	+ body_size
 		+ bytecode_size[ BC_JMP ];
 }
 
@@ -154,6 +214,11 @@ static size_t generate( ast_t* node, bytecode_builder_t* bc, generator_context_t
 	case AST_MINUS:		 return generate_minus( node, bc, ctx );
 	case AST_MULT:		 return generate_mult( node, bc, ctx );
 	case AST_DIVIDE:	 return generate_div( node, bc, ctx ); 
+	case AST_LT:	     return generate_lt( node, bc, ctx );
+	case AST_LE:         return generate_le( node, bc, ctx );
+	case AST_EQ:         return generate_eq( node, bc, ctx );
+	case AST_GE:         return generate_ge( node, bc, ctx );
+	case AST_GT:         return generate_gt( node, bc, ctx );
 	case AST_SEQ:		 return generate_seq( node, bc, ctx ); 
 	case AST_IDENTIFIER: return generate_identifier( node, bc, ctx ); 
 	case AST_PRINT:		 return generate_print( node, bc, ctx ); 
@@ -171,6 +236,7 @@ bytecode_builder_t generate_from_ast( ast_t* root ) {
 	ctx = generator_context_create();
 
 	generate( root, &bc, ctx );
+	emit_bytecode( &bc, BC_HALT );
 	generator_context_destroy( ctx );
 	return bc;
 }
