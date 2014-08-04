@@ -23,10 +23,8 @@ typedef enum {
 	TOK_MULT,
 	TOK_DIVIDE,
 
-	TOK_LE,
 	TOK_LT,
-	TOK_EQ,
-	TOK_GE,
+	TOK_EQ, 
 	TOK_GT,
 
 	TOK_NUM,
@@ -55,11 +53,9 @@ static char* token_strings[] = {
 	"*",
 	"/",
 
-	"<=",
 	"<",
-	"==",
-	">=",
-	">"
+	"==", 
+	">",
 
 	"<num>",
 	"<ident>",

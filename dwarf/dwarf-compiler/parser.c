@@ -73,15 +73,9 @@ static ast_t* expression( token_list_t** stream, const char* const code ) {
 	if ( accept( stream, TOK_LT) ) {
 		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
 		return ast_lt( lhs, rhs );
-	} else if ( accept( stream, TOK_LE) ) {
-		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
-		return ast_le( lhs, rhs );
 	} else if ( accept( stream, TOK_EQ) ) {
 		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
 		return ast_eq( lhs, rhs );
-	} else if ( accept( stream, TOK_GE) ) {
-		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
-		return ast_ge( lhs, rhs );
 	} else if ( accept( stream, TOK_GT) ) {
 		rhs = expression0( stream, code );		error_if_null( rhs, stream, code );
 		return ast_gt( lhs, rhs );

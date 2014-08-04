@@ -18,6 +18,7 @@ typedef enum {
 	BC_JZ,
 	BC_JNZ,
 	BC_ICMP,
+	BC_EQ,
 	BC_PRINT,
 	BC_DEBUG
 } opcode_t;
@@ -36,6 +37,7 @@ static char* bytecode_mnemonics[] = {
 	"JZ",
 	"JNZ",
 	"ICMP",
+	"EQ",
 	"PRINT",
 	"DEBUG"
 };
@@ -61,11 +63,7 @@ typedef struct {
 	bytecode_t* last;
 }
 bytecode_builder_t;
-
-typedef struct {
-	addr_offset_t* addr; 
-} addr_param_t;
- 
+  
  
 
 bytecode_t* emit_bytecode( bytecode_builder_t* builder, opcode_t opcode ); 
@@ -90,5 +88,6 @@ void emit_ipopreg( bytecode_builder_t* builder, reg_num_t reg);
 void bytecode_foreach( bytecode_t* bc, void ( action )( bytecode_t* ) );
 void bytecode_print( bytecode_t* bytecode );
 void bytecode_prettyprint( bytecode_t* bc );
-
+void bytecode_free( bytecode_t* bc );
+void bytecode_flush( bytecode_t* bc, FILE* file);
 #endif

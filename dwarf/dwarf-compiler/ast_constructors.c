@@ -41,16 +41,8 @@ ast_t* ast_lt( ast_t* left, ast_t* right ) {
 	return ast_binop( left, right, AST_LT );
 }
 
-ast_t* ast_le( ast_t* left, ast_t* right ) {
-	return ast_binop( left, right, AST_LE );
-}
-
 ast_t* ast_eq( ast_t* left, ast_t* right ) {
 	return ast_binop( left, right, AST_EQ );
-}
-
-ast_t* ast_ge( ast_t* left, ast_t* right ) {
-	return ast_binop( left, right, AST_GE );
 }
 
 ast_t* ast_gt( ast_t* left, ast_t* right ) {

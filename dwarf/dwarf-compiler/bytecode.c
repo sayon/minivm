@@ -9,26 +9,18 @@ size_t bytecode_size[] = {
 	1,
 	1,
 	1,
+	1, 
 	1 + sizeof( lang_int_t ),
 	1 + sizeof( reg_num_t ),
 	1 + sizeof( reg_num_t ),
 	1 + sizeof( addr_offset_t ),
 	1 + sizeof( addr_offset_t ),
+	1 + sizeof( addr_offset_t ),
+	1,
 	1,
 	1,
 	1
 };
-
-/* Helpers *//*
-static bytecode_t* last( bytecode_t* bc )
-{
-	while (bc != NULL) bc = bc->next;
-	return bc;
-}
-
-static void bc_concat( bytecode_t* left, bytecode_t* right ) {
-	last( left )-> next = right;
-}*/
 
 void bytecode_foreach( bytecode_t* bc, void ( action )( bytecode_t* ) ) {
 	bytecode_t* next;
@@ -55,7 +47,6 @@ bytecode_t* emit_bytecode( bytecode_builder_t* builder, opcode_t opcode) {
 
 	return item;
 }
-
 
 
 /* Helpers to emit specific bytecodes with parameters */
@@ -132,4 +123,42 @@ void bytecode_prettyprint( bytecode_t* bc ) {
 		bc = next;
 	}
 }
+static void bytecode_free_one( bytecode_t* bc ) { free (bc); }
 
+void bytecode_free( bytecode_t* bc ) {
+	bytecode_foreach( bc, bytecode_free_one );
+}
+
+
+static void bytecode_flush_one( bytecode_t* bc, FILE* file ) {
+	fwrite( &(bc->opcode), 1, 1, file );
+
+	switch( bc->opcode ) {
+		case BC_IPUSHC:
+			fwrite( &(bc-> params.immediate), sizeof( lang_int_t ), 1, file ); 
+		break;
+	case BC_IPUSHREG:
+	case BC_IPOPREG:
+		fwrite( &(bc-> params.reg), sizeof( reg_num_t ), 1, file ); 
+		break;
+	case BC_JMP:
+	case BC_JZ:
+		fwrite( &(bc-> params.offset), sizeof( addr_offset_t ), 1, file ); 
+		break;
+	default:
+		break;
+
+	}
+}
+
+void bytecode_flush( bytecode_t* bc, FILE* file) {
+	bytecode_t* next;
+
+	if ( bc == NULL ) return;
+
+	while( bc != NULL ) {
+		next = bc->next;
+		bytecode_flush_one( bc, file );
+		bc = next;
+	}
+}

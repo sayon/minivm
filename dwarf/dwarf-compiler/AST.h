@@ -14,6 +14,9 @@ typedef enum {
 	AST_MINUS,
 	AST_MULT,
 	AST_DIVIDE,
+	AST_LT, 
+	AST_EQ, 
+	AST_GT,
 	AST_SEQ,
 	AST_IDENTIFIER,
 	AST_PRINT
@@ -77,6 +80,12 @@ ast_t* ast_plus( ast_t* left, ast_t* right );
 ast_t* ast_minus( ast_t* left, ast_t* right );
 ast_t* ast_mult( ast_t* left, ast_t* right );
 ast_t* ast_div( ast_t* left, ast_t* right );
+
+ast_t* ast_lt( ast_t* left, ast_t* right ); 
+ast_t* ast_eq( ast_t* left, ast_t* right ); 
+ast_t* ast_gt( ast_t* left, ast_t* right );
+
+
 ast_t* ast_assignment( ast_t* ident, ast_t* expr );
 ast_t* ast_seq( ast_t* left, ast_t* right );
 ast_t* ast_identifier( char* name );
