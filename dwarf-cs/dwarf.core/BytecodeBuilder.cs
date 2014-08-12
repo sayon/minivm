@@ -7,6 +7,35 @@ namespace dwarf.core
     {
         private List<byte> bytecode = new List<byte>();
 
+        private Dictionary<Label, int> labels = new Dictionary<Label, int>();
+        private Dictionary<Label, List<int>> fixups = new Dictionary<Label, List<int>>();
+
+        private int LabelOffset(Label label)
+        {
+            if (labels.ContainsKey(label))
+                return labels[label] - bytecode.Count + 4;
+
+            if (!fixups.ContainsKey(label))
+                fixups.Add(label, new List<int>());
+
+            fixups[label].Add(bytecode.Count);
+            return bytecode.Count + 4;
+        }
+
+        private void DoFixups(List<int> offsets, int address)
+        {
+            foreach (var offset in offsets)
+            {
+                var pc = BitConverter.ToInt32(bytecode.GetRange(offset, 4).ToArray(), 0);
+                var b = BitConverter.GetBytes(address - pc);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    bytecode[offset + i] = b[i];
+                }
+            }
+        }
+
         public List<byte> Bytecode
         {
             get { return bytecode; }
@@ -49,9 +78,29 @@ namespace dwarf.core
             return this;
         }
 
+        public BytecodeBuilder jz(Label label)
+        {
+            bytecode.Add(0x0A);
+            bytecode.AddRange(BitConverter.GetBytes(LabelOffset(label)));
+            return this;
+        }
+
         public BytecodeBuilder print()
         {
             bytecode.Add(0x0E);
+            return this;
+        }
+
+        public BytecodeBuilder label(Label label)
+        {
+            if (fixups.ContainsKey(label))
+            {
+                DoFixups(fixups[label], bytecode.Count);
+                fixups.Remove(label);
+            }
+
+            labels.Add(label, bytecode.Count);
+
             return this;
         }
     }
