@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using dwarf.core;
 using NUnit.Framework;
 
@@ -7,6 +8,18 @@ namespace tests
     [TestFixture]
     public class VmTests
     {
+        private static string Multiline(params string[] lines)
+        {
+            var builder = new StringBuilder();
+
+            foreach (var line in lines)
+            {
+                builder.AppendLine(line);
+            }
+
+            return builder.ToString();
+        }
+
         [Test]
         public void Test1()
         {
@@ -24,7 +37,7 @@ namespace tests
 
             vm.Run();
 
-            Assert.AreEqual("3\r\n", printer.ToString());
+            Assert.AreEqual(Multiline("3"), printer.ToString());
         }
 
         [Test]
@@ -44,7 +57,7 @@ namespace tests
 
             vm.Run();
 
-            Assert.AreEqual("0\r\n", printer.ToString());
+            Assert.AreEqual(Multiline("0"), printer.ToString());
         }
 
         [Test]
@@ -64,7 +77,7 @@ namespace tests
 
             vm.Run();
 
-            Assert.AreEqual("15\r\n", printer.ToString());
+            Assert.AreEqual(Multiline("15"), printer.ToString());
         }
 
         [Test]
@@ -90,7 +103,7 @@ namespace tests
 
             vm.Run();
 
-            Assert.AreEqual("10\r\n20\r\n", printer.ToString());
+            Assert.AreEqual(Multiline("10", "20"), printer.ToString());
         }
 
         [Test]
@@ -121,7 +134,7 @@ namespace tests
 
             vm.Run();
 
-            Assert.AreEqual("10\r\n", printer.ToString());
+            Assert.AreEqual(Multiline("10"), printer.ToString());
         }
     }
 }
