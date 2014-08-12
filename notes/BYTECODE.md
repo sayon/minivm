@@ -28,7 +28,7 @@ addr_offset | Смещение относительно счетчика ком�
   0A | JZ *OFF*:addr_offset   | A = pop(); if (A == 0) { PC = PC + OFF }
   0B | JNZ *OFF*:addr_offset  | A = pop(); if (A != 0) { PC = PC + OFF }
   0C | ICMP                 | FIXME
-  0D | EQ                   | FIXME
+  0D | EQ                   | A = pop(); B = pop(); if (A == B) push(1); else push(0);
   0E | PRINT                | Печатает число с верхушки стека на устройсве вывода
   0F | DEBUG                | FIXME
   
