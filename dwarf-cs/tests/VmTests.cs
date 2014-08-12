@@ -79,7 +79,8 @@ namespace tests
                 .jz(l1)
                 .ipushc(10)
                 .print()
-                .label(l1)
+
+              .label(l1)
                 .ipushc(20)
                 .print()
                 .halt();
