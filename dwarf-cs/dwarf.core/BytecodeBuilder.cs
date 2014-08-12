@@ -30,6 +30,12 @@ namespace dwarf.core
             return this;
         }
 
+        public BytecodeBuilder imul()
+        {
+            bytecode.Add(0x03);
+            return this;
+        }
+
         public BytecodeBuilder dup()
         {
             bytecode.Add(0x05);

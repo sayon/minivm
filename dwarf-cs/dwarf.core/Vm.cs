@@ -43,6 +43,10 @@ namespace dwarf.core
                         stack.Push(stack.Pop() - stack.Pop());
                         break;
 
+                    case 0x03:
+                        stack.Push(stack.Pop() * stack.Pop());
+                        break;
+
                     case 0x05:
                         stack.Push(stack.Peek());
                         break;

@@ -46,5 +46,25 @@ namespace tests
 
             Assert.AreEqual("0\r\n", printer.ToString());
         }
+
+        [Test]
+        public void Test3()
+        {
+            var builder = new BytecodeBuilder();
+
+            builder
+                .ipushc(3)
+                .ipushc(5)
+                .imul()
+                .print()
+                .halt();
+
+            var printer = new StringWriter();
+            var vm = new Vm(builder.Bytecode, printer);
+
+            vm.Run();
+
+            Assert.AreEqual("15\r\n", printer.ToString());
+        }
     }
 }
