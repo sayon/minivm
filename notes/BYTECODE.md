@@ -22,8 +22,8 @@ addr_offset | Смещение относительно счетчика ком�
   04 | IDIV                 | A = pop(); B = pop(); push(A / B)
   05 | DUP                  | A = peek(); push(A)
   06 | IPUSHC *NUM*:int       | push(NUM)
-  07 | IPUSHREG *N*:reg_num   | push(RegN)
-  08 | IPOPREG *N*:reg_num    | RegN = pop()
+  07 | IPUSHREG *N*:reg_num   | push(Reg*N*)
+  08 | IPOPREG *N*:reg_num    | Reg*N* = pop()
   09 | JMP *OFF*:addr_offset  | PC = PC + OFF
   0A | JZ *OFF*:addr_offset   | A = peek(); if (A == 0) { PC = PC + OFF }
   0B | JNZ *OFF*:addr_offset  | A = peek(); if (A != 0) { PC = PC + OFF }
