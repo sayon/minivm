@@ -24,6 +24,18 @@ namespace dwarf.core
             return this;
         }
 
+        public BytecodeBuilder isub()
+        {
+            bytecode.Add(0x02);
+            return this;
+        }
+
+        public BytecodeBuilder dup()
+        {
+            bytecode.Add(0x05);
+            return this;
+        }
+
         public BytecodeBuilder ipushc(long c)
         {
             bytecode.Add(0x06);

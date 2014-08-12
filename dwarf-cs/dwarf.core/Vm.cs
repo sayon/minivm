@@ -39,6 +39,14 @@ namespace dwarf.core
                         stack.Push(stack.Pop() + stack.Pop());
                         break;
 
+                    case 0x02:
+                        stack.Push(stack.Pop() - stack.Pop());
+                        break;
+
+                    case 0x05:
+                        stack.Push(stack.Peek());
+                        break;
+
                     case 0x06:
                         stack.Push(BitConverter.ToInt64(bytecode, pc));
                         pc += sizeof(long);
