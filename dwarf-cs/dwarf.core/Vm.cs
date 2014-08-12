@@ -56,13 +56,24 @@ namespace dwarf.core
                         pc += sizeof(long);
                         break;
 
+                    case 0x09:
+                    {
+                        var off = BitConverter.ToInt32(bytecode, pc);
+                        pc += sizeof (int);
+
+                        pc = pc + off;
+                        break;
+                    }
+
                     case 0x0A:
+                    {
                         var off = BitConverter.ToInt32(bytecode, pc);
                         pc += sizeof (int);
 
                         if (stack.Pop() == 0)
                             pc = pc + off;
                         break;
+                    }
 
                     case 0x0E:
                         printer.WriteLine(stack.Pop());

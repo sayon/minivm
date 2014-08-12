@@ -13,7 +13,7 @@ namespace dwarf.core
         private int LabelOffset(Label label)
         {
             if (labels.ContainsKey(label))
-                return labels[label] - bytecode.Count + 4;
+                return labels[label] - (bytecode.Count + 4);
 
             if (!fixups.ContainsKey(label))
                 fixups.Add(label, new List<int>());
@@ -75,6 +75,13 @@ namespace dwarf.core
         {
             bytecode.Add(0x06);
             bytecode.AddRange(BitConverter.GetBytes(c));
+            return this;
+        }
+
+        public BytecodeBuilder jmp(Label label)
+        {
+            bytecode.Add(0x09);
+            bytecode.AddRange(BitConverter.GetBytes(LabelOffset(label)));
             return this;
         }
 
