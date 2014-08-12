@@ -92,6 +92,12 @@ namespace dwarf.core
             return this;
         }
 
+        public BytecodeBuilder eq()
+        {
+            bytecode.Add(0x0D);
+            return this;
+        }
+
         public BytecodeBuilder print()
         {
             bytecode.Add(0x0E);

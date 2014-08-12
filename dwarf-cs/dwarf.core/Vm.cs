@@ -75,6 +75,16 @@ namespace dwarf.core
                         break;
                     }
 
+                    case 0x0D:
+                    {
+                        var a = stack.Pop();
+                        var b = stack.Pop();
+
+                        stack.Push(a == b ? 1 : 0);
+
+                        break;
+                    }
+
                     case 0x0E:
                         printer.WriteLine(stack.Pop());
                         break;

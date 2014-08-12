@@ -136,5 +136,31 @@ namespace tests
 
             Assert.AreEqual(Multiline("10"), printer.ToString());
         }
+
+        [Test]
+        public void Test6()
+        {
+            var builder = new BytecodeBuilder();
+
+            builder
+                .ipushc(10)
+                .ipushc(10)
+                .eq()
+                .print()
+
+                .ipushc(10)
+                .ipushc(11)
+                .eq()
+                .print()
+
+                .halt();
+
+            var printer = new StringWriter();
+            var vm = new Vm(builder.Bytecode, printer);
+
+            vm.Run();
+
+            Assert.AreEqual(Multiline("1", "0"), printer.ToString());
+        }
     }
 }
