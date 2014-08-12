@@ -91,5 +91,36 @@ namespace tests
 
             Assert.AreEqual("10\r\n20\r\n", printer.ToString());
         }
+
+        [Test]
+        public void Test5()
+        {
+            var builder = new BytecodeBuilder();
+
+            var l1 = new Label();
+            var l2 = new Label();
+            var l3 = new Label();
+
+            builder
+                .jmp(l2)
+
+              .label(l1)
+                .ipushc(10)
+                .print()
+                .jmp(l3)
+
+              .label(l2)
+                .jmp(l1)
+
+              .label(l3)
+                .halt();
+
+            var printer = new StringWriter();
+            var vm = new Vm(builder.Bytecode, printer);
+
+            vm.Run();
+
+            Assert.AreEqual("10\r\n", printer.ToString());
+        }
     }
 }
