@@ -40,8 +40,13 @@ namespace dwarf.core
                         break;
 
                     case 0x02:
-                        stack.Push(stack.Pop() - stack.Pop());
+                    {
+                        var b = stack.Pop();
+                        var a = stack.Pop();
+
+                        stack.Push(a - b);
                         break;
+                    }
 
                     case 0x03:
                         stack.Push(stack.Pop() * stack.Pop());
@@ -71,6 +76,16 @@ namespace dwarf.core
                         pc += sizeof (int);
 
                         if (stack.Pop() == 0)
+                            pc = pc + off;
+                        break;
+                    }
+
+                    case 0x0B:
+                    {
+                        var off = BitConverter.ToInt32(bytecode, pc);
+                        pc += sizeof(int);
+
+                        if (stack.Pop() != 0)
                             pc = pc + off;
                         break;
                     }

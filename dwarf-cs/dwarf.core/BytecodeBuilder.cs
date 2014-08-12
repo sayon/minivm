@@ -92,6 +92,13 @@ namespace dwarf.core
             return this;
         }
 
+        public BytecodeBuilder jnz(Label label)
+        {
+            bytecode.Add(0x0B);
+            bytecode.AddRange(BitConverter.GetBytes(LabelOffset(label)));
+            return this;
+        }
+
         public BytecodeBuilder eq()
         {
             bytecode.Add(0x0D);
