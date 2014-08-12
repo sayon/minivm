@@ -17,9 +17,9 @@ addr_offset | Смещение относительно счетчика ком�
  --- | ----------------     | ---------------------------------
   00 | HALT                 | Останов программы
   01 | IADD                 | A = pop(); B = pop(); push(A + B)
-  02 | ISUB                 | A = pop(); B = pop(); push(A + B)
-  03 | IMUL                 | A = pop(); B = pop(); push(A + B)
-  04 | IDIV                 | A = pop(); B = pop(); push(A + B)
+  02 | ISUB                 | A = pop(); B = pop(); push(A - B)
+  03 | IMUL                 | A = pop(); B = pop(); push(A * B)
+  04 | IDIV                 | A = pop(); B = pop(); push(A / B)
   05 | DUP                  | A = peek(); push(A)
   06 | IPUSHC *NUM*:int       | push(NUM)
   07 | IPUSHREG *N*:reg_num   | push(RegN)
