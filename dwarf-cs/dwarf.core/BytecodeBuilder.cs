@@ -65,6 +65,12 @@ namespace dwarf.core
             return this;
         }
 
+        public BytecodeBuilder idiv()
+        {
+            bytecode.Add(0x04);
+            return this;
+        }
+
         public BytecodeBuilder dup()
         {
             bytecode.Add(0x05);
@@ -75,6 +81,20 @@ namespace dwarf.core
         {
             bytecode.Add(0x06);
             bytecode.AddRange(BitConverter.GetBytes(c));
+            return this;
+        }
+
+        public BytecodeBuilder ipushreg(short reg)
+        {
+            bytecode.Add(0x07);
+            bytecode.AddRange(BitConverter.GetBytes(reg));
+            return this;
+        }
+
+        public BytecodeBuilder ipopreg(short reg)
+        {
+            bytecode.Add(0x08);
+            bytecode.AddRange(BitConverter.GetBytes(reg));
             return this;
         }
 
@@ -96,6 +116,12 @@ namespace dwarf.core
         {
             bytecode.Add(0x0B);
             bytecode.AddRange(BitConverter.GetBytes(LabelOffset(label)));
+            return this;
+        }
+
+        public BytecodeBuilder icmp()
+        {
+            bytecode.Add(0x0C);
             return this;
         }
 
