@@ -1,25 +1,12 @@
 ﻿using System.IO;
-using System.Text;
 using dwarf.core;
 using NUnit.Framework;
 
 namespace tests
 {
     [TestFixture]
-    public class VmTests
+    public class VmTests:TestBase
     {
-        private static string Multiline(params string[] lines)
-        {
-            var builder = new StringBuilder();
-
-            foreach (var line in lines)
-            {
-                builder.AppendLine(line);
-            }
-
-            return builder.ToString();
-        }
-
         [Test]
         public void Test1()
         {

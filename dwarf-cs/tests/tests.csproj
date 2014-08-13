@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BytecodeBuilderTests.cs" />
+    <Compile Include="LexerTests.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="VmTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="BytecodeBuilder.cs" />
     <Compile Include="Label.cs" />
+    <Compile Include="lang\Lexer.cs" />
+    <Compile Include="lang\Tokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vm.cs" />
   </ItemGroup>
