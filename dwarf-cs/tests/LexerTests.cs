@@ -42,8 +42,9 @@ namespace tests
 
             const string expected = "if ([a] == [b]) then { " +
                                     "[a] := [a] - [b]; " +
-                                    "[a] / [b] " +
-                                    "[a] * [b] ";
+                                    "} else { " +
+                                    "[a] := <0>; " +
+                                    "}";
 
             Assert.AreEqual(expected, actual);
         }
