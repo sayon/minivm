@@ -26,5 +26,26 @@ namespace tests
 
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void IfThenElseTest()
+        {
+            var source = Multiline(
+                "if (a == b) then {",
+                "    a := a - b;",
+                "} else {",
+                "    a := 0;",
+                "}");
+
+            var lexer = new Lexer();
+            var actual = String.Join("", lexer.Tokenize(source));
+
+            const string expected = "if ([a] == [b]) then { " +
+                                    "[a] := [a] - [b]; " +
+                                    "[a] / [b] " +
+                                    "[a] * [b] ";
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
