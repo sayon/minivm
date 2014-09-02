@@ -44,7 +44,7 @@ namespace tests
                                     "[a] := [a] - [b]; " +
                                     "} else { " +
                                     "[a] := <0>; " +
-                                    "}";
+                                    "} ";
 
             Assert.AreEqual(expected, actual);
         }
