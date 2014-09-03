@@ -181,6 +181,7 @@ namespace dwarf.core.lang
 
             var state = 0;
             var pos = 0;
+            var tok = "";
 
             // HACK
             source += (char) 0xffff;
@@ -194,6 +195,7 @@ namespace dwarf.core.lang
                         matcher.Reset();
                     }
 
+                    tok = "";
                     state = 1;
                 }
 
@@ -214,6 +216,12 @@ namespace dwarf.core.lang
                             break;
                         }
                     }
+
+                    if (token == null && source[pos] != 0xffff)
+                    {
+                        tok += source[pos];
+                        throw new Exception(String.Format("Unknown token: {0}", tok));
+                    }
                 }
 
                 if (token != null)
@@ -223,6 +231,7 @@ namespace dwarf.core.lang
                 }
                 else
                 {
+                    tok += source[pos];
                     pos ++;
                 }
             }
