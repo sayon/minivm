@@ -48,5 +48,24 @@ namespace tests
 
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void ConstTest()
+        {
+            var source = Multiline(
+                "a := 10",
+                "a := -12",
+                "a := +13"
+                );
+
+            var lexer = new Lexer();
+            var actual = String.Join("", lexer.Tokenize(source));
+
+            const string expected = "[a] := <10> " +
+                                    "[a] := <-12> " +
+                                    "[a] := <13> ";
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

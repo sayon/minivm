@@ -47,15 +47,42 @@ namespace dwarf.core.lang
     {
         public bool Check(char c, int pos)
         {
-            if (pos == 0 && (c == '-' && c == '+'))
-                return true;
+            return Char.IsNumber(c);
+        }
+
+        public Token CreateToken(string src)
+        {
+            return new ConstantToken(long.Parse(src));
+        }
+    }
+
+    internal class SignedNumberRule : ITokenRule
+    {
+        public bool Check(char c, int pos)
+        {
+            if (pos == 0)
+                return c == '-' || c == '+';
             else
                 return Char.IsNumber(c);
         }
 
         public Token CreateToken(string src)
         {
-            return new ConstantToken(long.Parse(src));
+            long c;
+
+            // FIXME: Это по сути затычка для ситуации, когда src не является
+            //        правильной константой, но check возвращает true потому,
+            //        что проверяет только один символ. По сути это ошибка
+            //        дизайна.
+
+            if (Int64.TryParse(src, out c))
+            {
+                return new ConstantToken(c);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
@@ -75,10 +102,10 @@ namespace dwarf.core.lang
     internal class Matcher
     {
         private ITokenRule rule;
-        private bool stop;
         private string matched;
 
         public Token Token { get; private set; }
+        public bool Stop { get; private set; }
 
         public Matcher(ITokenRule rule)
         {
@@ -87,14 +114,14 @@ namespace dwarf.core.lang
 
         public void Reset()
         {
-            stop = false;
+            Stop = false;
             matched = String.Empty;
             Token = null;
         }
 
         public void Update(char c)
         {
-            if (stop)
+            if (Stop)
                 return;
 
             if (rule.Check(c, matched.Length))
@@ -103,10 +130,10 @@ namespace dwarf.core.lang
             }
             else
             {
-                stop = true;
+                Stop = true;
             }
 
-            if (stop && matched.Length > 0)
+            if (Stop && matched.Length > 0)
             {
                 Token = rule.CreateToken(matched);
             }
@@ -118,6 +145,9 @@ namespace dwarf.core.lang
         private static readonly ITokenRule[] Rules =
         {
             new WhitespaceRule(),
+
+            new NumberRule(),
+            new SignedNumberRule(),
 
             new KeywordRule("if"),
             new KeywordRule("then"),
@@ -143,7 +173,6 @@ namespace dwarf.core.lang
             new KeywordRule(":="),
 
             new IdentifierRule(),
-            new NumberRule(),
         };
 
         public IEnumerable<Token> Tokenize(string source)
@@ -174,12 +203,16 @@ namespace dwarf.core.lang
                 }
 
                 Token token = null;
-                foreach (var matcher in matchers)
+
+                if (matchers.All(m => m.Stop))
                 {
-                    if (matcher.Token != null)
+                    foreach (var matcher in matchers)
                     {
-                        token = matcher.Token;
-                        break;
+                        if (matcher.Token != null)
+                        {
+                            token = matcher.Token;
+                            break;
+                        }
                     }
                 }
 
