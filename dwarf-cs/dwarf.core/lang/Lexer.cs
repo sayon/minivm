@@ -107,6 +107,11 @@ namespace dwarf.core.lang
         public Token Token { get; private set; }
         public bool Stop { get; private set; }
 
+        public int MatchedLen
+        {
+            get { return matched.Length; }
+        }
+
         public Matcher(ITokenRule rule)
         {
             this.rule = rule;
@@ -208,12 +213,14 @@ namespace dwarf.core.lang
 
                 if (matchers.All(m => m.Stop))
                 {
+                    int len = 0;
+
                     foreach (var matcher in matchers)
                     {
-                        if (matcher.Token != null)
+                        if (matcher.Token != null && matcher.MatchedLen > len)
                         {
                             token = matcher.Token;
-                            break;
+                            len = matcher.MatchedLen;
                         }
                     }
 

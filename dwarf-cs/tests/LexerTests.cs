@@ -50,6 +50,20 @@ namespace tests
         }
 
         [Test]
+        public void AmbiguousIdentifiersTest()
+        {
+            var source = Multiline(
+                "if iff");
+
+            var lexer = new Lexer();
+            var actual = String.Join("", lexer.Tokenize(source));
+
+            const string expected = "if [iff] ";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void ConstTest()
         {
             var source = Multiline(
